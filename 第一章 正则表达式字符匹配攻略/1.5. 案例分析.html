@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>1.5. 案例分析</title>
+</head>
+<body>
+    <div>
+        要求匹配颜色
+        
+        #ffbbad
+        #Fc01DF
+        #FFF
+        #ffE
+
+        
+
+
+    </div>
+    <script>
+        // 练习 1 匹配颜色
+        // 由于分支结构是惰性匹配，使用分支结构时，要注意分支的顺序
+        var reg = /#([a-f0-9A-F]{6}|[a-f0-9A-F]{3})/g; 
+        var str = `#ffbbad #Fc01DF #FFF #ffE`;
+
+        console.log(str.match(reg));
+
+    </script>
+    <div>
+        要求匹配时间
+        23:59
+        02:07
+    </div>
+    <script>
+        // 练习 2 匹配时间
+        // 
+        var reg = /^([0-1]\d|[2][0-3]):[0-5]\d$/;
+        console.log(reg.test("23:59"));
+        console.log(reg.test("02:07"));
+
+        // 如果要匹配 7:9 也就是前面的 0 可以省略
+        var reg = /^(0?\d|1\d|2[0-3]):(0?\d|[1-5]\d)$/;
+        console.log(reg.test('00:00'));
+    </script>
+
+    <div>
+        要求匹配日期格式 yyyy-mm-dd
+        2017-06-10
+    </div>
+    <script>
+        // 这里不考虑月份的大小
+        var reg = /^\d{1,4}-(0\d|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+        var str = '2014-06-10';
+        console.log(reg.test(str));
+    </script>
+
+    <div>
+        要求匹配 windows 操作系统下的文件路径
+        F:\study\javascript\regex\regular expression.pdf
+        F:\study\javascript\regex\
+        F:\study\javascript
+        F:\
+    </div>
+    <script>
+        var reg = /^[a-zA-Z]:\\([^\\:*<>|"?\r\n/]+\\)*([^\\:*<>|"?\r\n/]+)?$/;
+        console.log( reg.test("F:\\study\\javascript\\regex\\regular expression.pdf") );
+    </script>
+    <div>
+        匹配 id
+        <br>
+        &lt;div id="container" class="main"&gt;&lt;/div&gt;
+    </div>
+    <script>
+        var reg = /id="[^"]*"/;
+        var str = '<div id="container" class="main"></div>';
+        console.log(str.match(reg));
+    </script>
+</body>
+</html>

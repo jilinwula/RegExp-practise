@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>1.1. 两种模糊匹配</title>
+</head>
+<body>
+    <script>
+        // 1.1.1 横向模糊匹配
+        var reg = /ab{2,5}c/g;
+        var str = 'abc abbc abbbc abbbbc abbbbbc abbbbbbc';
+        var str2 = 'zzaaabbcc';
+        console.log(str.match(reg));
+        console.log(str2.match(reg));
+
+        // 纵向模糊匹配
+        var regex = /a[123]b/g;
+        var string = "a0b a1b a2b a3b a4b";
+        console.log(string.match(regex));
+    </script>
+</body>
+</html>

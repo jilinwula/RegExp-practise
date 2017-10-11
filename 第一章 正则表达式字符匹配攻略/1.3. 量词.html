@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>1.3. 量词</title>
+</head>
+<body>
+    <script>
+        // 默认为贪婪匹配，会尽可能多的匹配
+        var regex = /\d{2,5}/g;
+        var string = '123 1234 12345 123456';
+        console.log(string.match(regex));
+        // => ["123", "1234", "12345", "12345"]
+        
+        
+        // 惰性匹配，尽可能少的匹配
+        var regex = /\d{2,5}?/g;
+        var string = "123 1234 12345 123456";
+        console.log( string.match(regex) );
+        // => ["12", "12", "34", "12", "34", "12", "34", "56"]
+        // 其中 /\d{2,5}?/ 表示，虽然 2 到 5 次都行，当 2 个就够的时候，就不再往下尝试了。
+
+        // 通过在[量词]后面加个[问号]就能实现惰性匹配
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>2.2. 如何陪陪位置呢？</title>
+</head>
+<body>
+    <script>
+        // 2.2.1. ^ 和 $
+        // 将开头和结尾 处 替换为 '#' 
+        var result = 'hello'.replace(/^|$/g, '#');
+        console.log(result);
+        // => #hello#
+        
+        // 多行匹配模式（即有修饰符 m）时，二者是行的概念，这一点需要我们注意：
+        var result = 'I\nLove\nJavaScript'.replace(/^|$/gm, '#');
+        console.log(result);
+        // => 输出结果为
+        // #I#
+        // #Love#
+        // #JavaScript#
+        
+        // 2.2.2. \b 和 \B
+        // \b 是单词边界，具体就是 \w 与 \W 之间的位置，也包括 \w 与 ^ 之间的位置，和 \w 与 $ 之间的位置。
+
+        var result = '[JS] Lesson_01.mp4'.replace(/\b/g, '#');
+        console.log(result);
+        // => [#JS#] #Lesson_01#.#mp4#
+        // 
+        var result = '[JS] Lesson_01.mp4'.replace(/\B/g, '#');
+        console.log(result);
+        // => #[J#S]# L#e#s#s#o#n#_#0#1.m#p#4
+        
+        // 2.2.3. (?=p) 和 (?!p)
+        // (?=p)，其中 p 是一个子模式，即 p 前面的位置，或者说，该位置后面的字符要匹配 p。
+
+        var result = 'hello'.replace(/(?=l)/g, '#');
+        console.log(result);
+        // => he#l#lo  可见这里匹配的是 l 前面的一个位置
+        
+        console.log('hello'.replace(/(?!l)/g, '#'));
+        // => #h#ell#o#   这个是非 l 的前面的位置
+        
+    </script>
+</body>
+</html>

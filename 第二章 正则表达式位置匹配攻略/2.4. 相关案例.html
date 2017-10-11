@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>2.4. 相关案例</title>
+</head>
+<body>
+    <div>
+        相关案例<br>
+        让你写一个不匹配任何东西的正则
+        <br>
+        easy /.^/;
+        <br>
+        因为此正则要求只有一个字符，但该字符后面是开头，而这样的字符串是不存在的。
+
+    </div>
+    <div>
+        2.4.2 数字的千位分隔符表示法
+    比如把 "12345678"，变成 "12,345,678"。
+
+    </div>
+    <script>
+        var str = '111.00';
+        // var reg = /(?!^)(?=(\d{3}|(\d{3}\.\d{0,2})(?!$)?)+$)/g;
+
+        reg = /(?!^)(?=(\d{3}(\.\d{0,2})?)+$)/g;
+        console.log(str.replace(reg, ','));
+    </script>
+</body>
+</html>

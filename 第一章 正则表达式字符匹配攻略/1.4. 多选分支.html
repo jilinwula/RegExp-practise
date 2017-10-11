@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>1.4. 多选分支</title>
+</head>
+<body>
+    <script>
+        var regex = /good|goodbye/g;
+        var string = "goodbye";
+        console.log( string.match(regex) );
+        // => ["good"]
+
+        var regex = /goodbye|good/g;
+        var string = "goodbye";
+        console.log( string.match(regex) );
+        // => ["goodbye"]
+
+        // ===========
+        // 分支结构是惰性的，前面的匹配上之后后面的不再匹配了
+        // ===========
+    </script>
+</body>
+</html>
