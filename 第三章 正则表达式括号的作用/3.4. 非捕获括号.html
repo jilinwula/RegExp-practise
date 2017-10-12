@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>3.3. 反向引用</title>
+</head>
+<body>
+    <div>
+    之前文中出现的括号，都会捕获它们匹配到的数据，以便后续引用，因此也称它们是捕获型分组和捕获型分支。
+    <br>
+    如果只想要括号最原始的功能，但不会引用它，即，既不在 API 里引用，也不在正则里反向引用。
+    <br>
+    此时可以使用非捕获括号 (?:p) 和 (?:p1|p2|p3)，例如本章第一个例子可以修改为：
+
+    </div>
+    <script>
+    var regex = /(?:ab)+/g;
+    var string = "ababa abbb ababab";
+    console.log(string.match(regex));
+    // => ["abab", "ab", "ababab"]
+
+    var regex = /(?:abcd)+\s\1/g;
+    var string = 'abcd abcd';
+    console.log(regex.test(string));
+    // => false
+    </script>
+</body>
+</html>

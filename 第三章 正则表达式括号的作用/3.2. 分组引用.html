@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>3.2. 分组引用</title>
+</head>
+<body>
+    <div>
+        比如提取出年、月、日，可以这么做：
+
+    </div>
+    <script>
+        var regexp = /(\d{4})-(\d{2})-(\d{2})/;
+        var string = '2017-10-12';
+        console.log(string.match(regexp));
+        console.log(regexp.exec(string));
+        /**
+         * 只要上面进行了正则操作 就可以使用构造函数的全局属性 $1 至 $9 来获取：
+         * regex.exec(string);
+         * string.match(regex);
+         * regexp.test(string);
+         */
+        console.log(RegExp.$1, RegExp.$2); // => 2017 10
+        console.log(RegExp.$3, RegExp.$4 === ''); // => 12 true 可见默认 $n 为空字符串
+    </script>
+
+    <div>
+        3.2.2. 替换 <hr>
+        比如，想把 yyyy-mm-dd 格式，替换成 mm/dd/yyyy 怎么做？
+    </div>
+    <script>
+        var regexp = /(\d{4})-(\d{2})-(\d{2})/;
+        var string = '2017-10-12';
+        var result = string.replace(regexp, '$2/$3/$1');
+        console.log(result); // => 10/12/2017
+
+        // 其中 replace 中的，第二个参数里面用 $1 $2 $3 代指相应的组分，可以等价于：
+        result = string.replace(regexp, function() {
+            return RegExp.$2 + '/' + RegExp.$3 + '/' + RegExp.$1;
+        });
+        console.log(result);
+
+        // 也可以等价于
+        result = string.replace(regexp, function(match, year, month, day) {
+            return month + '/' + day + '/' + year;
+        });
+        console.log(result);
+        
+    </script>
+</body>
+</html>
