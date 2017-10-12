@@ -21,11 +21,86 @@
 
     </div>
     <script>
-        var str = '111.00';
+        var str = '111.000';
+        var reg;
         // var reg = /(?!^)(?=(\d{3}|(\d{3}\.\d{0,2})(?!$)?)+$)/g;
 
         reg = /(?!^)(?=(\d{3}(\.\d{0,2})?)+$)/g;
         console.log(str.replace(reg, ','));
+    </script>
+    <div>
+        支持其他形式<br>
+        如果要把 "12345678 123456789" 替换成 "12,345,678 123,456,789"。<br>
+        此时我们需要修改正则，把里面的开头 ^ 和结尾 $，修改成 \b：
+    </div>
+    <script>
+        var str = '12345678.99 123456789.000';
+        // reg = /(?!\b)(?=(\d{3})+\b)/g;
+
+        // 这里的 (?!\b) 等价于 \B 
+        // \B 表示【非】单词边界 数字小数点两边都是边界 #0#.#11# 这里 # 表示边界
+        reg = /\B(?=(\d{3})+\b)/g;
+        console.log(str.replace(reg, ','));
+    </script>
+    <div>
+        1888 格式化成 ￥ 1,888.00
+    </div>
+    <script>
+        function fromat(num) {
+            return Number(num).toFixed(2).replace(/\B(?=(\d{3})+\b)/g, ',').replace(/^/g, '$$ ');
+        }
+        console.log(fromat('100188.25'));
+    </script>
+    <div>
+        2:对字符串“张三56分， 李四74分， 王五92分， 赵六84分”的分数提取汇总，算出平均分并输出每个人的平均分差距。
+    </div>
+    <script>
+        var str = '张三56分， 李四74分， 王五92分， 赵六84分';
+
+        function format(s) {
+            var scores = str.match(/\d+/g);
+            var avrg = scores.map(item => Number(item)).reduce((pre, cur) => pre + cur) / scores.length;
+            s = s.split(/，\s+/);
+            s = s.map(item => {
+                var num = Number(item.match(/\d+/)[0]);
+                return item + `(${num > avrg ? '高于平均分' + Math.abs(num - avrg) : '低于平均分' + Math.abs(num - avrg)}分)`;
+            });
+            return `平均分为:${avrg}分： ` + s.join('， ');
+        }
+        console.log(format(str));
+
+        // 更好的做法 http://www.cnblogs.com/whitewolf/archive/2013/03/14/2958720.html
+        function f(s) {
+            var scores = s.match(/\d+/g);
+            var avg = scores.map(item => Number(item)).reduce((pre, cur) => pre + cur) / scores.length;
+            return s.replace(/(\d+)分/g, function() {
+                console.log(arguments);
+                var n = Number(arguments[1]);
+                return n + '分(' + (n > avg ? '超出平均分' + Math.abs(n - avg) :
+                        '低于平均分' + Math.abs(n - avg)) + '分)';
+            });
+        }
+        console.log(f(str));
+    </script>
+    <div>
+        验证密码问题
+        同时包含数字和大小写字母
+    </div>
+    <script>
+        // 1.1 长度为 6 - 12 的数字和字母组成
+        var regexp = /^[a-zA-Z\d]{6,12}$/;
+
+        // 1.2 至少一个数字
+        var numReg = /(?=.*\d)/;
+        regexp = /(?=.*\d)^[a-zA-Z\d]{6,12}$/;
+
+        // 1.3 至少包含一个字母
+        // 1.3.1 至少包含一个小写字母
+        var alphaReg1 = /(?=.*[a-z])/;
+        // 1.3.2 至少包含一个大写字母
+        var alphaReg2 = /(?=.*[A-Z])/;
+        // 完全体
+        regexp = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])^[a-zA-Z\d]{6,12}$/;
     </script>
 </body>
 </html>
