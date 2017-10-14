@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>3.5. 相关案例</title>
+</head>
+<body>
+    <div>
+        3.5.1. trim 方法模拟
+    </div>
+    <script>
+        // 3.5.1.
+        function trim(str) {
+            return str.replace(/^\s*|\s*$/g, '');
+        }
+        console.log(trim('  hello  '));
+        // => hello
+        
+        // 惰性匹配方法
+        function trim2(str) {
+            return str.replace(/^\s*(.*?)\s*$/g, '$1');
+        }
+        console.log(trim2(' hello 1 world '));
+        // => hello 1 world
+    </script>
+
+    <div>
+        <hr>
+        3.5.2. 将每个单词的首字母大写
+    </div>
+    <script>
+        function titleize(str) {
+            return str.toLowerCase().replace(/\b\w+?/g, match => match.toUpperCase());
+        }
+        console.log(titleize('my name Is kAngkang'));
+        // => My Name Is Kangkang
+    </script>
+    <div>
+        <hr>
+        3.5.3. 驼峰化
+    </div>
+    <script>
+        function camelize(str) {
+            return str.toLowerCase()
+                // 转换[非开头]的大小写
+                .replace(/(?!^)[-_\s]+\w+?/g, match => match.toUpperCase())
+                // 去掉连接符号
+                .replace(/[-_\s]+/g, '')
+                // 有 ',' 的地方补上空格(', ')
+                .replace(/,+/g, '$& ');
+        }
+        console.log(camelize('-i-am kangkang,, i_like-play- basketball --'));
+        // => iAmKangkang, ILikePlayBasketball
+    </script>
+    <div>
+    <hr>
+        3.5.4. 中划线化
+    </div>
+    <script>
+        function dashlize(str) {
+            return str
+                // 大写字母前加 '-' (A => -A)
+                .replace(/[A-Z]/g, '-$&')
+                // 格式化分隔符
+                .replace(/[,\s_-]+/g, '-')
+                // 去掉头尾分隔符
+                .replace(/^-*|-*$/g, '')
+                .toLowerCase();
+        }
+        console.log(dashlize('-i-am kangkang,, i_like-play- Basketball --'));
+        // => i-am-kangkang-i-like-play-basketball
+        console.log(dashlize('-iAm kangkang,, I_LikePlay- Basketball --'));
+        // => i-am-kangkang-i-like-play-basketball
+    </script>
+    <div>
+    <hr>
+        3.5.5. HTML转义和反转义<br>
+        &lt;div class=&quot;container&quot;&gt;hello word, I&#39;m Kangkang&lt;/div&gt;
+    </div>
+    <script>
+        function escapeHTML(str) {
+            var map = {
+                '<': 'lt',
+                '>': 'gt',
+                '"': 'quot',
+                '&': 'amp',
+                '\'': '#39'
+            };
+            return str.replace(new RegExp('[' + Object.keys(map).join('') + ']', 'g'), match => '&' + map[match] + ';');
+        }
+        console.log(escapeHTML('<div class="container">hello world, I\'m Kangkang</div>'));
+        // => &lt;div class=&quot;container&quot;&gt;hello word, I&#39;m Kangkang&lt;/div&gt;
+        
+        function unescapeHTML(str) {
+            var map = {
+                nbsp: ' ',
+                lt: '<',
+                gt: '>',
+                quot: '"',
+                amp: '&',
+                '#39': '\''
+            };
+            for (let key in map) {
+                str = str.replace(new RegExp('\&' + '(' + key + ')' + ';', 'g'), (match, key) => map[key])
+            }
+            return str;
+        }
+        console.log(unescapeHTML('&lt;div class=&quot;container&quot;&gt;hello word, I&#39;m Kangkang&lt;/div&gt;'));
+        // => <div class="container">hello word, I'm Kangkang</div>
+        
+        // 更好的写法
+        function unescapeHTML2(str) {
+            var map = {
+                nbsp: ' ',
+                lt: '<',
+                gt: '>',
+                quot: '"',
+                amp: '&',
+                '#39': '\''
+            };
+            // 这里的正则匹配了 '&' 和 ';' 中间的东西，并且利用分组的方式获取到了
+            return str.replace(/\&([^;]+);/g, (match, key) => map[key]);
+        }
+        console.log(unescapeHTML2('&lt;div class=&quot;container&quot;&gt;hello word, I&#39;m Kangkang&lt;/div&gt;'));
+        // => <div class="container">hello word, I'm Kangkang</div>
+    </script>
+    <div>
+    <hr>
+        3.5.6. 匹配成对标签<br>
+        要求匹配
+        <br>
+        &lt;title&gt;regular expression&lt;/title&gt;
+        <br>
+        &lt;p&gt;laoyao bye bye&lt;/p&gt;
+        <br>
+        不匹配：&lt;title&gt;wrong!&lt;/p&gt;
+    </div>
+    <script>
+        // 匹配一个开标签可以用 /<[^>]+>/g
+        // 匹配一个闭标签可以用 /\/[^>]+>/g
+        
+        var regexp = /<([^>]+)>[\d\D]*<\/\1>/g;
+        var regexp2 = /<([\w-]+)[^>]*>([\d\D]*)<\/\1>/igm;
+        console.log(regexp2.test('<div>hello <p>world</p></div>')); // => true
+        '<div class="container">hello <p>world</p></div>'.replace(regexp2, function() {
+            console.log(arguments);
+            // => [
+            //      "<div class="container">hello <p>world</p></div>", 
+            //      "div", // $1
+            //      "hello <p>world</p>",  // $2
+            //      0, 
+            //      "<div class="container">hello <p>world</p></div>", 
+            //      callee: function, Symbol(Symbol.iterator): function
+            //    ]
+            console.log(RegExp.$1);
+            console.log(RegExp.$2);
+        });
+    </script>
+</body>
+</html>
