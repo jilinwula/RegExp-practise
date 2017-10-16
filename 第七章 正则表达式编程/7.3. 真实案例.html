@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>7.3. 真实案例</title>
+</head>
+<body>
+    <div>
+        <h3>7.3.1. 使用构造函数生成正则表达式</h3>
+        模拟实现 getElementsByClassName 
+        <p class="container">111</p>
+        <p class="container">222</p>
+        <p>333</p>
+        <script>
+            function getElementsByClassName(className) {
+                var eles = document.getElementsByTagName("*");
+                var reg = new RegExp('(^|\\s+)' + className + '(\\s+|$)');
+                var ret = [];
+                for (var i = 0; i < eles.length; i++) {
+                    if (reg.test(eles[i].className)) {
+                        ret.push(eles[i]);
+                    }
+                }
+                return ret;
+            }
+            var container = getElementsByClassName('container');
+            container.forEach(item => item.style.color = 'red');
+        </script>
+    </div>
+
+    <div>
+    <h3>7.3.2. 使用字符串保存数据</h3>
+    <script>
+        var utils = {};
+        'Boolean|Number|String|Undefined|Null|Function|Array|Object|Error|Date|NaN'.split('|').forEach(function(item) {
+            utils['is' + item] = function(target) {
+                if (item === 'NaN') {
+                    if (target !== target) {
+                        return true;
+                    }
+                    return false;
+                } 
+                return Object.prototype.toString.call(target) === '[object ' + item + ']';
+            };
+        });
+    </script>
+    </div>
+</body>
+</html>
