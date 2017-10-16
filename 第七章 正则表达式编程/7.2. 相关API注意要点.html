@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>7.2. 相关API注意要点</title>
+</head>
+<body>
+    <div>
+        <h3>用于正则操作的方法，共有 6 个，字符串实例 4 个，正则实例 2 个：</h3>
+        <ul>
+            <li>String#search</li>
+            <li>String#split</li>
+            <li>String#match</li>
+            <li>String#replace</li>
+            <li>RegExp#test</li>
+            <li>RegExp#exec</li>
+        </ul>
+    </div>
+    <div>
+        <h3>7.2.1. seach 和 match 的参数问题</h3>
+        search 和 match，会把字符串转换为正则
+    </div>
+    <script>
+        var string = "2017.06.27";
+        console.log( string.search(".") );
+        // => 0
+        //需要修改成下列形式之一
+        console.log( string.search("\\.") );
+        console.log( string.search(/\./) );
+        // => 4
+        // => 4
+        console.log( string.match(".") );
+        // => ["2", index: 0, input: "2017.06.27"]
+        //需要修改成下列形式之一
+        console.log( string.match("\\.") );
+        console.log( string.match(/\./) );
+        // => [".", index: 4, input: "2017.06.27"]
+        // => [".", index: 4, input: "2017.06.27"]
+        console.log( string.split(".") );
+        // => ["2017", "06", "27"]
+        console.log( string.replace(".", "/") );
+        // => "2017/06.27"
+    </script>
+    <div>
+        <h3>7.2.2. match 返回结果的格式问题</h3>
+        match 返回结果的格式，与正则对象是否有修饰符 g 有关。
+
+        <p>没有 g，返回的是标准匹配格式，即，数组的第一个元素是整体匹配的内容，接下来是分组捕获的内容，然后是整体匹配的第一个下标，最后是输入的目标字符串。</p>
+        <p>有 g，返回的是所有匹配的内容。</p>
+        当没有匹配时，不管有无 g，都返回 null。
+    </div>
+    <script>
+        var string = "2017.06.27";
+        var regex1 = /\b(\d+)\b/;
+        var regex2 = /\b(\d+)\b/g;
+        console.log( string.match(regex1) );
+        console.log( string.match(regex2) );
+    </script>
+    <div>
+        <h3>7.2.3. exec 比 match 更强大</h3>
+        <p>当正则没有 g 时，使用 match 返回的信息比较多。但是有 g 后，就没有关键的信息 index 了。</p>
+        <p>而 exec 方法就能解决这个问题，它能接着上一次匹配后继续匹配：</p>
+    </div>
+    <script>
+        var string = "2017.06.27";
+        var regex2 = /\b(\d+)\b/g;
+        console.log( regex2.exec(string) );
+        console.log( regex2.lastIndex);
+        console.log( regex2.exec(string) );
+        console.log( regex2.lastIndex);
+        console.log( regex2.exec(string) );
+        console.log( regex2.lastIndex );
+        console.log( regex2.exec(string) );
+        console.log( regex2.lastIndex );
+        // => ["2017", "2017", index: 0, input: "2017.06.27"]
+        // => 4
+        // => ["06", "06", index: 5, input: "2017.06.27"]
+        // => 7
+        // => ["27", "27", index: 8, input: "2017.06.27"]
+        // => 10
+        // => null
+        // => 0
+    </script>
+</body>
+</html>
