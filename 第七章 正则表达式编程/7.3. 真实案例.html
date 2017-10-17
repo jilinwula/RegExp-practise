@@ -44,7 +44,22 @@
                 return Object.prototype.toString.call(target) === '[object ' + item + ']';
             };
         });
+
+        // => 与正则无关
+        function caculate(num) {
+            var t = 0;
+            var c = 0;
+            var result = [];
+            while (num > 10) {
+                num *= 0.9;
+                t++;
+                result.push(num);
+            }
+            var count = result.reduce((pre, cur) => pre + cur);
+            console.log(count, t);
+        }
     </script>
+
     </div>
 </body>
 </html>
